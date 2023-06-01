@@ -1,0 +1,57 @@
+syntax = "proto3";
+package idl;
+
+import "common.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "evildoer/protogen;protogen";
+
+service GroupSrv {
+  rpc ListGroup (Page) returns (ListGroupResponse) {}
+  rpc GetGroup (IDReqOrResponse) returns (GetGroupResponse) {}
+  rpc CreateGroup (Group) returns (CreateGroupResponse) {}
+  rpc UpdateGroup (Group) returns (DefaultResponse) {}
+  rpc ListMode (google.protobuf.Empty) returns(ListModeResponse) {}
+}
+
+message Group {
+  bytes id = 1;
+  string key = 2;
+  string name = 3;
+  string description = 4;
+  string state = 5;
+  string creator = 6;
+  repeated string access_mode = 7;
+}
+
+message ListGroupResponse {
+  DefaultResponse default_response = 1;
+  repeated Group groups = 2;
+}
+
+message GetGroupResponse {
+  DefaultResponse default_response = 1;
+  Group group = 2;
+}
+
+message CreateGroupResponse {
+  DefaultResponse default_response = 1;
+  IDReqOrResponse id_resp = 2;
+}
+
+message ListModeResponse {
+  DefaultResponse default_response = 1;
+  repeated GroupState group_state = 2;
+}
+
+enum AccessMode {
+    ACCESS_MODE_API = 0;
+    ACCESS_MODE_APP = 1;
+    ACCESS_MODE_MQ = 2;
+}
+
+enum GroupState {
+    GROUP_STATE_NORMAL = 0;
+    GROUP_STATE_DISABLED = 1;
+    GROUP_STATE_DELETED = 2;
+}

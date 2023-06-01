@@ -1,0 +1,19 @@
+syntax = "proto3";
+package idl;
+
+option go_package = "evildoer/protogen;protogen";
+option java_multiple_files = true;
+
+message Page {
+  int32 offset = 1;
+  int32 limit = 2;
+}
+
+message IDReqOrResponse {
+  bytes id = 1;
+}
+
+message DefaultResponse {
+  int32 code = 1;
+  string message = 2;
+}

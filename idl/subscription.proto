@@ -1,0 +1,56 @@
+syntax = "proto3";
+package idl;
+
+import "common.proto";
+import "form.proto";
+
+option go_package = "evildoer/protogen;protogen";
+option java_multiple_files = true;
+
+service SubscriptionSrv {
+  rpc ListSubscription (Page) returns (ListSubscriptionResponse) {}
+  rpc GetSubscription (IDReqOrResponse) returns (SubscriptionResponse) {}
+  rpc CreateSubscription(Subscription) returns (SubscriptionResponse) {}
+}
+
+message SubscriptionResponse {
+  DefaultResponse default_response = 1;
+  SubscriptionAndFormResponse subscription = 2;
+}
+
+message ListSubscriptionResponse {
+  DefaultResponse default_response = 1;
+  repeated SubscriptionAndFormResponse subscriptions = 2;
+}
+
+message SubscriptionAndFormResponse {
+  Subscription subscription = 1;
+  Form form = 2;
+}
+
+message Subscription {
+  bytes id = 1;
+  string key = 2;
+  string name = 3;
+  string description = 4;
+  bytes form_key = 5;
+  map<string, subscribe_rules> subscribe_rule = 6;
+  repeated consumer consume_config = 7;
+  string state = 8;
+  string creator = 9;
+}
+
+message subscribe_rules {
+  repeated subscribe_rule rules = 1;
+}
+
+message subscribe_rule {
+  string field = 1;
+  string pattern = 2;
+  bytes value = 3;
+}
+
+message consumer {
+  string type = 1;
+  string config = 2;
+}

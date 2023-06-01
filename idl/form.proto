@@ -1,0 +1,56 @@
+syntax = "proto3";
+package idl;
+
+import "common.proto";
+import "group.proto";
+
+option go_package = "evildoer/protogen;protogen";
+option java_multiple_files = true;
+
+service FormSrv {
+  rpc ListForm (Page) returns (ListFormResponse) {}
+  rpc GetForm (IDReqOrResponse) returns (GetFormResponse) {}
+  rpc ChangeState (ChangeStateReq) returns (DefaultResponse) {}
+  rpc CreateForm (Form) returns (FormAndGroupResponse) {}
+  rpc UpdateForm (UpdateFormReq) returns (FormAndGroupResponse) {}
+}
+
+message FormAndGroupResponse {
+  DefaultResponse default_response = 1;
+  Group group = 2;
+  Form form = 3;
+}
+
+message UpdateFormReq {
+  IDReqOrResponse id = 1;
+  Form form = 2;
+}
+
+message ChangeStateReq {
+  IDReqOrResponse id = 1;
+  string state = 2;
+}
+
+message ListFormResponse {
+  DefaultResponse default_response = 1;
+  repeated Form forms = 2;
+}
+
+message GetFormResponse {
+  DefaultResponse default_response = 1;
+  Form form = 2;
+}
+
+message Form {
+  bytes id = 1;
+  string key = 2;
+  string name = 3;
+  string description = 4;
+  bytes group_key = 5;
+  int32 version = 6;
+  bool latest_version = 7;
+  bytes data_scheme = 8;
+  string es_index_interval = 9;
+  string state = 10;
+  string creator = 11;
+}

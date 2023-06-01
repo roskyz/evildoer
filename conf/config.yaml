@@ -1,0 +1,4 @@
+bind-addr: 'localhost:7070'
+metadata:
+  name: cluster
+  namespace: test-ns
