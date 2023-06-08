@@ -5,8 +5,20 @@ option go_package = "evildoer/protogen;protogen";
 option java_multiple_files = true;
 
 message Page {
-  int32 offset = 1;
-  int32 limit = 2;
+  int64 offset = 1;
+  int64 limit = 2;
+}
+
+message Search {
+  optional sort sort = 1; // default value is 'created_at desc', proto3 disallowed custom value, we could use add-ons
+  optional string content = 2; // like
+  optional string created_after = 3;
+  optional string created_before = 4;
+}
+
+message sort {
+  string field = 1;
+  bool asc = 2;
 }
 
 message IDReqOrResponse {

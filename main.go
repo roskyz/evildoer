@@ -1,4 +1,4 @@
-package evildoer
+package main
 
 import (
 	"evildoer/biz/service"

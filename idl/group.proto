@@ -7,7 +7,7 @@ import "google/protobuf/empty.proto";
 option go_package = "evildoer/protogen;protogen";
 
 service GroupSrv {
-  rpc ListGroup (Page) returns (ListGroupResponse) {}
+  rpc ListGroup (ListGroupReq) returns (ListGroupResponse) {}
   rpc GetGroup (IDReqOrResponse) returns (GetGroupResponse) {}
   rpc CreateGroup (Group) returns (CreateGroupResponse) {}
   rpc UpdateGroup (Group) returns (DefaultResponse) {}
@@ -15,18 +15,24 @@ service GroupSrv {
 }
 
 message Group {
-  bytes id = 1;
-  string key = 2;
+  optional bytes id = 1;
+  string key = 2; // todo: mongo uniq index
   string name = 3;
   string description = 4;
-  string state = 5;
-  string creator = 6;
-  repeated string access_mode = 7;
+  GroupState state = 5;
+  string creator = 6; // todo: creator should not be passed
+  repeated AccessMode access_mode = 7;
+}
+
+message ListGroupReq {
+  Page page = 1;
+  optional Search search_option = 2;
 }
 
 message ListGroupResponse {
   DefaultResponse default_response = 1;
-  repeated Group groups = 2;
+  int64 count = 2;
+  repeated Group groups = 3;
 }
 
 message GetGroupResponse {

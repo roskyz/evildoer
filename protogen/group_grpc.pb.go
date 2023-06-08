@@ -31,7 +31,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GroupSrvClient interface {
-	ListGroup(ctx context.Context, in *Page, opts ...grpc.CallOption) (*ListGroupResponse, error)
+	ListGroup(ctx context.Context, in *ListGroupReq, opts ...grpc.CallOption) (*ListGroupResponse, error)
 	GetGroup(ctx context.Context, in *IDReqOrResponse, opts ...grpc.CallOption) (*GetGroupResponse, error)
 	CreateGroup(ctx context.Context, in *Group, opts ...grpc.CallOption) (*CreateGroupResponse, error)
 	UpdateGroup(ctx context.Context, in *Group, opts ...grpc.CallOption) (*DefaultResponse, error)
@@ -46,7 +46,7 @@ func NewGroupSrvClient(cc grpc.ClientConnInterface) GroupSrvClient {
 	return &groupSrvClient{cc}
 }
 
-func (c *groupSrvClient) ListGroup(ctx context.Context, in *Page, opts ...grpc.CallOption) (*ListGroupResponse, error) {
+func (c *groupSrvClient) ListGroup(ctx context.Context, in *ListGroupReq, opts ...grpc.CallOption) (*ListGroupResponse, error) {
 	out := new(ListGroupResponse)
 	err := c.cc.Invoke(ctx, GroupSrv_ListGroup_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -95,7 +95,7 @@ func (c *groupSrvClient) ListMode(ctx context.Context, in *emptypb.Empty, opts .
 // All implementations must embed UnimplementedGroupSrvServer
 // for forward compatibility
 type GroupSrvServer interface {
-	ListGroup(context.Context, *Page) (*ListGroupResponse, error)
+	ListGroup(context.Context, *ListGroupReq) (*ListGroupResponse, error)
 	GetGroup(context.Context, *IDReqOrResponse) (*GetGroupResponse, error)
 	CreateGroup(context.Context, *Group) (*CreateGroupResponse, error)
 	UpdateGroup(context.Context, *Group) (*DefaultResponse, error)
@@ -107,7 +107,7 @@ type GroupSrvServer interface {
 type UnimplementedGroupSrvServer struct {
 }
 
-func (UnimplementedGroupSrvServer) ListGroup(context.Context, *Page) (*ListGroupResponse, error) {
+func (UnimplementedGroupSrvServer) ListGroup(context.Context, *ListGroupReq) (*ListGroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListGroup not implemented")
 }
 func (UnimplementedGroupSrvServer) GetGroup(context.Context, *IDReqOrResponse) (*GetGroupResponse, error) {
@@ -136,7 +136,7 @@ func RegisterGroupSrvServer(s grpc.ServiceRegistrar, srv GroupSrvServer) {
 }
 
 func _GroupSrv_ListGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Page)
+	in := new(ListGroupReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func _GroupSrv_ListGroup_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: GroupSrv_ListGroup_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GroupSrvServer).ListGroup(ctx, req.(*Page))
+		return srv.(GroupSrvServer).ListGroup(ctx, req.(*ListGroupReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -25,8 +25,8 @@ type Page struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Offset int32 `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
-	Limit  int32 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset int64 `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	Limit  int64 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 }
 
 func (x *Page) Reset() {
@@ -61,18 +61,144 @@ func (*Page) Descriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Page) GetOffset() int32 {
+func (x *Page) GetOffset() int64 {
 	if x != nil {
 		return x.Offset
 	}
 	return 0
 }
 
-func (x *Page) GetLimit() int32 {
+func (x *Page) GetLimit() int64 {
 	if x != nil {
 		return x.Limit
 	}
 	return 0
+}
+
+type Search struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Sort          *Sort   `protobuf:"bytes,1,opt,name=sort,proto3,oneof" json:"sort,omitempty"`       // default value is 'created_at desc', proto3 disallowed custom value, we could use add-ons
+	Content       *string `protobuf:"bytes,2,opt,name=content,proto3,oneof" json:"content,omitempty"` // like
+	CreatedAfter  *string `protobuf:"bytes,3,opt,name=created_after,json=createdAfter,proto3,oneof" json:"created_after,omitempty"`
+	CreatedBefore *string `protobuf:"bytes,4,opt,name=created_before,json=createdBefore,proto3,oneof" json:"created_before,omitempty"`
+}
+
+func (x *Search) Reset() {
+	*x = Search{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Search) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Search) ProtoMessage() {}
+
+func (x *Search) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Search.ProtoReflect.Descriptor instead.
+func (*Search) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Search) GetSort() *Sort {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+func (x *Search) GetContent() string {
+	if x != nil && x.Content != nil {
+		return *x.Content
+	}
+	return ""
+}
+
+func (x *Search) GetCreatedAfter() string {
+	if x != nil && x.CreatedAfter != nil {
+		return *x.CreatedAfter
+	}
+	return ""
+}
+
+func (x *Search) GetCreatedBefore() string {
+	if x != nil && x.CreatedBefore != nil {
+		return *x.CreatedBefore
+	}
+	return ""
+}
+
+type Sort struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Field string `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
+	Asc   bool   `protobuf:"varint,2,opt,name=asc,proto3" json:"asc,omitempty"`
+}
+
+func (x *Sort) Reset() {
+	*x = Sort{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Sort) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Sort) ProtoMessage() {}
+
+func (x *Sort) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Sort.ProtoReflect.Descriptor instead.
+func (*Sort) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Sort) GetField() string {
+	if x != nil {
+		return x.Field
+	}
+	return ""
+}
+
+func (x *Sort) GetAsc() bool {
+	if x != nil {
+		return x.Asc
+	}
+	return false
 }
 
 type IDReqOrResponse struct {
@@ -86,7 +212,7 @@ type IDReqOrResponse struct {
 func (x *IDReqOrResponse) Reset() {
 	*x = IDReqOrResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[1]
+		mi := &file_common_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -99,7 +225,7 @@ func (x *IDReqOrResponse) String() string {
 func (*IDReqOrResponse) ProtoMessage() {}
 
 func (x *IDReqOrResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[1]
+	mi := &file_common_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -112,7 +238,7 @@ func (x *IDReqOrResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IDReqOrResponse.ProtoReflect.Descriptor instead.
 func (*IDReqOrResponse) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{1}
+	return file_common_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *IDReqOrResponse) GetId() []byte {
@@ -134,7 +260,7 @@ type DefaultResponse struct {
 func (x *DefaultResponse) Reset() {
 	*x = DefaultResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[2]
+		mi := &file_common_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -147,7 +273,7 @@ func (x *DefaultResponse) String() string {
 func (*DefaultResponse) ProtoMessage() {}
 
 func (x *DefaultResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[2]
+	mi := &file_common_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -160,7 +286,7 @@ func (x *DefaultResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefaultResponse.ProtoReflect.Descriptor instead.
 func (*DefaultResponse) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{2}
+	return file_common_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *DefaultResponse) GetCode() int32 {
@@ -182,18 +308,35 @@ var File_common_proto protoreflect.FileDescriptor
 var file_common_proto_rawDesc = []byte{
 	0x0a, 0x0c, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x03,
 	0x69, 0x64, 0x6c, 0x22, 0x34, 0x0a, 0x04, 0x50, 0x61, 0x67, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x6f,
-	0x66, 0x66, 0x73, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x6f, 0x66, 0x66,
+	0x66, 0x66, 0x73, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x6f, 0x66, 0x66,
 	0x73, 0x65, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x05, 0x52, 0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x22, 0x21, 0x0a, 0x0f, 0x49, 0x44, 0x52,
-	0x65, 0x71, 0x4f, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02,
-	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x02, 0x69, 0x64, 0x22, 0x3f, 0x0a, 0x0f,
-	0x44, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x63,
-	0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x42, 0x1e, 0x50,
-	0x01, 0x5a, 0x1a, 0x65, 0x76, 0x69, 0x6c, 0x64, 0x6f, 0x65, 0x72, 0x2f, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x67, 0x65, 0x6e, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x67, 0x65, 0x6e, 0x62, 0x06, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x28, 0x03, 0x52, 0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x22, 0xdb, 0x01, 0x0a, 0x06, 0x53, 0x65,
+	0x61, 0x72, 0x63, 0x68, 0x12, 0x22, 0x0a, 0x04, 0x73, 0x6f, 0x72, 0x74, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x09, 0x2e, 0x69, 0x64, 0x6c, 0x2e, 0x73, 0x6f, 0x72, 0x74, 0x48, 0x00, 0x52,
+	0x04, 0x73, 0x6f, 0x72, 0x74, 0x88, 0x01, 0x01, 0x12, 0x1d, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74,
+	0x65, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x48, 0x01, 0x52, 0x07, 0x63, 0x6f, 0x6e,
+	0x74, 0x65, 0x6e, 0x74, 0x88, 0x01, 0x01, 0x12, 0x28, 0x0a, 0x0d, 0x63, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x64, 0x5f, 0x61, 0x66, 0x74, 0x65, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x48, 0x02,
+	0x52, 0x0c, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x41, 0x66, 0x74, 0x65, 0x72, 0x88, 0x01,
+	0x01, 0x12, 0x2a, 0x0a, 0x0e, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x62, 0x65, 0x66,
+	0x6f, 0x72, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x48, 0x03, 0x52, 0x0d, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x64, 0x42, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x88, 0x01, 0x01, 0x42, 0x07, 0x0a,
+	0x05, 0x5f, 0x73, 0x6f, 0x72, 0x74, 0x42, 0x0a, 0x0a, 0x08, 0x5f, 0x63, 0x6f, 0x6e, 0x74, 0x65,
+	0x6e, 0x74, 0x42, 0x10, 0x0a, 0x0e, 0x5f, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61,
+	0x66, 0x74, 0x65, 0x72, 0x42, 0x11, 0x0a, 0x0f, 0x5f, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64,
+	0x5f, 0x62, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x22, 0x2e, 0x0a, 0x04, 0x73, 0x6f, 0x72, 0x74, 0x12,
+	0x14, 0x0a, 0x05, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
+	0x66, 0x69, 0x65, 0x6c, 0x64, 0x12, 0x10, 0x0a, 0x03, 0x61, 0x73, 0x63, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x03, 0x61, 0x73, 0x63, 0x22, 0x21, 0x0a, 0x0f, 0x49, 0x44, 0x52, 0x65, 0x71,
+	0x4f, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x02, 0x69, 0x64, 0x22, 0x3f, 0x0a, 0x0f, 0x44, 0x65,
+	0x66, 0x61, 0x75, 0x6c, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a,
+	0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x63, 0x6f, 0x64,
+	0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x42, 0x1e, 0x50, 0x01, 0x5a,
+	0x1a, 0x65, 0x76, 0x69, 0x6c, 0x64, 0x6f, 0x65, 0x72, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x67,
+	0x65, 0x6e, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x67, 0x65, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -208,18 +351,21 @@ func file_common_proto_rawDescGZIP() []byte {
 	return file_common_proto_rawDescData
 }
 
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_common_proto_goTypes = []interface{}{
 	(*Page)(nil),            // 0: idl.Page
-	(*IDReqOrResponse)(nil), // 1: idl.IDReqOrResponse
-	(*DefaultResponse)(nil), // 2: idl.DefaultResponse
+	(*Search)(nil),          // 1: idl.Search
+	(*Sort)(nil),            // 2: idl.sort
+	(*IDReqOrResponse)(nil), // 3: idl.IDReqOrResponse
+	(*DefaultResponse)(nil), // 4: idl.DefaultResponse
 }
 var file_common_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2, // 0: idl.Search.sort:type_name -> idl.sort
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_common_proto_init() }
@@ -241,7 +387,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*IDReqOrResponse); i {
+			switch v := v.(*Search); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -253,6 +399,30 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Sort); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IDReqOrResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DefaultResponse); i {
 			case 0:
 				return &v.state
@@ -265,13 +435,14 @@ func file_common_proto_init() {
 			}
 		}
 	}
+	file_common_proto_msgTypes[1].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

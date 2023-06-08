@@ -1,0 +1,22 @@
+syntax = "proto3";
+package idl;
+
+import "common.proto";
+
+option go_package = "evildoer/protogen;protogen";
+option java_multiple_files = true;
+
+service AuthSrv {
+  rpc Auth (AuthReq) returns (AuthResponse) {}
+}
+
+message AuthReq {
+  string username = 1;
+  string password = 2;
+}
+
+message AuthResponse {
+  DefaultResponse default_response = 1;
+  string auth_jwt = 2;
+}
+

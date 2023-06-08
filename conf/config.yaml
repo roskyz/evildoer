@@ -1,4 +1,9 @@
 bind-addr: 'localhost:7070'
+mongodb:
+  address: 'mongodb://vmware.webinstant.online:27017'
+  db: evildoer
+  user: root
+  pass: example
 metadata:
   name: cluster
   namespace: test-ns
