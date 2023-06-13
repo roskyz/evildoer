@@ -19,7 +19,7 @@ message Group {
   string key = 2; // todo: mongo uniq index
   string name = 3;
   string description = 4;
-  GroupState state = 5;
+  State state = 5;
   string creator = 6; // todo: creator should not be passed
   repeated AccessMode access_mode = 7;
 }
@@ -47,17 +47,11 @@ message CreateGroupResponse {
 
 message ListModeResponse {
   DefaultResponse default_response = 1;
-  repeated GroupState group_state = 2;
+  repeated State group_state = 2;
 }
 
 enum AccessMode {
     ACCESS_MODE_API = 0;
     ACCESS_MODE_APP = 1;
     ACCESS_MODE_MQ = 2;
-}
-
-enum GroupState {
-    GROUP_STATE_NORMAL = 0;
-    GROUP_STATE_DISABLED = 1;
-    GROUP_STATE_DELETED = 2;
 }

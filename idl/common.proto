@@ -29,3 +29,9 @@ message DefaultResponse {
   int32 code = 1;
   string message = 2;
 }
+
+enum State {
+  STATE_NORMAL = 0;
+  STATE_DISABLED = 1;
+  STATE_DELETED = 2;
+}

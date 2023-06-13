@@ -30,7 +30,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FormSrvClient interface {
-	ListForm(ctx context.Context, in *Page, opts ...grpc.CallOption) (*ListFormResponse, error)
+	ListForm(ctx context.Context, in *ListFormReq, opts ...grpc.CallOption) (*ListFormResponse, error)
 	GetForm(ctx context.Context, in *IDReqOrResponse, opts ...grpc.CallOption) (*GetFormResponse, error)
 	ChangeState(ctx context.Context, in *ChangeStateReq, opts ...grpc.CallOption) (*DefaultResponse, error)
 	CreateForm(ctx context.Context, in *Form, opts ...grpc.CallOption) (*FormAndGroupResponse, error)
@@ -45,7 +45,7 @@ func NewFormSrvClient(cc grpc.ClientConnInterface) FormSrvClient {
 	return &formSrvClient{cc}
 }
 
-func (c *formSrvClient) ListForm(ctx context.Context, in *Page, opts ...grpc.CallOption) (*ListFormResponse, error) {
+func (c *formSrvClient) ListForm(ctx context.Context, in *ListFormReq, opts ...grpc.CallOption) (*ListFormResponse, error) {
 	out := new(ListFormResponse)
 	err := c.cc.Invoke(ctx, FormSrv_ListForm_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -94,7 +94,7 @@ func (c *formSrvClient) UpdateForm(ctx context.Context, in *UpdateFormReq, opts 
 // All implementations must embed UnimplementedFormSrvServer
 // for forward compatibility
 type FormSrvServer interface {
-	ListForm(context.Context, *Page) (*ListFormResponse, error)
+	ListForm(context.Context, *ListFormReq) (*ListFormResponse, error)
 	GetForm(context.Context, *IDReqOrResponse) (*GetFormResponse, error)
 	ChangeState(context.Context, *ChangeStateReq) (*DefaultResponse, error)
 	CreateForm(context.Context, *Form) (*FormAndGroupResponse, error)
@@ -106,7 +106,7 @@ type FormSrvServer interface {
 type UnimplementedFormSrvServer struct {
 }
 
-func (UnimplementedFormSrvServer) ListForm(context.Context, *Page) (*ListFormResponse, error) {
+func (UnimplementedFormSrvServer) ListForm(context.Context, *ListFormReq) (*ListFormResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListForm not implemented")
 }
 func (UnimplementedFormSrvServer) GetForm(context.Context, *IDReqOrResponse) (*GetFormResponse, error) {
@@ -135,7 +135,7 @@ func RegisterFormSrvServer(s grpc.ServiceRegistrar, srv FormSrvServer) {
 }
 
 func _FormSrv_ListForm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Page)
+	in := new(ListFormReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func _FormSrv_ListForm_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: FormSrv_ListForm_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FormSrvServer).ListForm(ctx, req.(*Page))
+		return srv.(FormSrvServer).ListForm(ctx, req.(*ListFormReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

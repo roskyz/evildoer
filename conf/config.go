@@ -15,6 +15,9 @@ var buffer []byte
 
 func initConfig() (c config) {
 	utils.AssertErr(yaml.Unmarshal(buffer, &c))
+	if len(c.Secret) != 32 {
+		panic("todo")
+	}
 	return
 }
 

@@ -1,6 +1,7 @@
 package odm
 
 import (
+	"context"
 	"evildoer/conf"
 	"evildoer/utils"
 	"time"
@@ -8,11 +9,14 @@ import (
 	"github.com/kamva/mgm/v3"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type BizInterfaces interface {
 	groupInterface
+	formInterface
+	Transaction(ctx context.Context, fn func(context.Context) error) error
 }
 
 var backendGetter utils.OnceGetter[BizInterfaces] = utils.MakeGetter(func() BizInterfaces {
@@ -65,8 +69,15 @@ func GenerateFindOption(sortField string, asc bool, offset, limit int64) *option
 			order = -1
 		}
 		sortOpt = append(sortOpt, bson.E{Key: sortField, Value: order})
-		option = option.SetSort(sortField)
+		option = option.SetSort(sortOpt)
 	}
 
 	return option
+}
+
+func (m *mongoBackend) Transaction(ctx context.Context, fn func(context.Context) error) error {
+	wrapperFn := func(session mongo.Session, sc mongo.SessionContext) error { return fn(sc) }
+
+	// simple `mongo.WithSession(ctx, session)`
+	return mgm.TransactionWithCtx(ctx, wrapperFn)
 }

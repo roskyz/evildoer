@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"evildoer/pkg/authmgr"
 	"evildoer/protogen"
 	"testing"
 	"time"
@@ -14,7 +15,9 @@ func TestNewClient(t *testing.T) {
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 	t.Cleanup(cancel)
-	client, err := NewGroupClient(ctx, "server.web.local:7070", nil)
+	client, err := NewGroupClient(ctx, "server.web.local:7070", &authmgr.AuthOpt{
+		Username: "user.admin", Password: "admin.password",
+	})
 	assert.Nil(t, err)
 
 	ctx = context.Background()
@@ -26,7 +29,7 @@ func TestNewClient(t *testing.T) {
 		Key:         "test-auto-group",
 		Name:        "test-auto-name",
 		Description: "test if project's working right",
-		State:       protogen.GroupState_GROUP_STATE_NORMAL,
+		State:       protogen.State_STATE_NORMAL,
 		Creator:     "rex",
 		AccessMode:  []protogen.AccessMode{protogen.AccessMode_ACCESS_MODE_API},
 	})

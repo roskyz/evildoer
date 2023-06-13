@@ -1,4 +1,5 @@
 bind-addr: 'localhost:7070'
+secret: "oiltiwypuz0ii2b0sdmfc2n63qzawgkw"
 mongodb:
   address: 'mongodb://vmware.webinstant.online:27017'
   db: evildoer

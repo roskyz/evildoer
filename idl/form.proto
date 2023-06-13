@@ -8,11 +8,23 @@ option go_package = "evildoer/protogen;protogen";
 option java_multiple_files = true;
 
 service FormSrv {
-  rpc ListForm (Page) returns (ListFormResponse) {}
+  rpc ListForm (ListFormReq) returns (ListFormResponse) {}
   rpc GetForm (IDReqOrResponse) returns (GetFormResponse) {}
   rpc ChangeState (ChangeStateReq) returns (DefaultResponse) {}
   rpc CreateForm (Form) returns (FormAndGroupResponse) {}
   rpc UpdateForm (UpdateFormReq) returns (FormAndGroupResponse) {}
+}
+
+message ListFormReq {
+  Page page = 1;
+
+  message FormSearch {
+    optional Search search_option = 1;
+    optional bool latest = 2;
+    optional string creator = 3;
+    optional string group = 4;
+  }
+  FormSearch form_search = 3;
 }
 
 message FormAndGroupResponse {
@@ -22,18 +34,19 @@ message FormAndGroupResponse {
 }
 
 message UpdateFormReq {
-  IDReqOrResponse id = 1;
+  IDReqOrResponse id_req = 1;
   Form form = 2;
 }
 
 message ChangeStateReq {
-  IDReqOrResponse id = 1;
-  string state = 2;
+  IDReqOrResponse id_req = 1;
+  State state = 2;
 }
 
 message ListFormResponse {
   DefaultResponse default_response = 1;
-  repeated Form forms = 2;
+  int64 count = 2;
+  repeated Form forms = 3;
 }
 
 message GetFormResponse {
@@ -42,15 +55,16 @@ message GetFormResponse {
 }
 
 message Form {
-  bytes id = 1;
-  string key = 2;
+  optional bytes id = 1;
+  string key = 2; // todo: mongo uniq index
   string name = 3;
   string description = 4;
-  bytes group_key = 5;
+  string group_key = 5;
   int32 version = 6;
   bool latest_version = 7;
-  bytes data_scheme = 8;
-  string es_index_interval = 9;
-  string state = 10;
-  string creator = 11;
+  bytes content_scheme = 8;
+  bytes content_sample = 9;
+  State state = 11;
+  string creator = 12;
 }
+

@@ -20,18 +20,6 @@ func (Group) CollectionName() string {
 	return prefix + "group"
 }
 
-var groupStateMap = map[protogen.GroupState]string{
-	protogen.GroupState_GROUP_STATE_NORMAL:   "normal",
-	protogen.GroupState_GROUP_STATE_DISABLED: "disabled",
-	protogen.GroupState_GROUP_STATE_DELETED:  "deleted",
-}
-
-var groupStateMapReverse = map[string]protogen.GroupState{
-	"normal":   protogen.GroupState_GROUP_STATE_NORMAL,
-	"disabled": protogen.GroupState_GROUP_STATE_DISABLED,
-	"deleted":  protogen.GroupState_GROUP_STATE_DELETED,
-}
-
 var accessModeMap = map[protogen.AccessMode]string{
 	protogen.AccessMode_ACCESS_MODE_API: "api",
 	protogen.AccessMode_ACCESS_MODE_APP: "app",
@@ -54,7 +42,7 @@ func (g Group) Conv() *protogen.Group {
 		Key:         g.Key,
 		Name:        g.Name,
 		Description: g.Description,
-		State:       groupStateMapReverse[g.State],
+		State:       StateMapReverse[g.State],
 		Creator:     g.Creator,
 		AccessMode:  accessModes,
 	}
@@ -69,7 +57,7 @@ func (Group) NewGroup(group *protogen.Group) *Group {
 		Key:         group.Key,
 		Name:        group.Name,
 		Description: group.Description,
-		State:       groupStateMap[group.State],
+		State:       StateMap[group.State],
 		Creator:     group.Creator,
 		AccessMode:  accessModes,
 	}

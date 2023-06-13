@@ -69,10 +69,10 @@ func (gs *groupService) UpdateGroup(ctx context.Context, group *protogen.Group) 
 func (gs *groupService) ListMode(ctx context.Context, empty *emptypb.Empty) (*protogen.ListModeResponse, error) {
 	listModeResponse := &protogen.ListModeResponse{
 		DefaultResponse: defaultResponse(),
-		GroupState: []protogen.GroupState{
-			protogen.GroupState_GROUP_STATE_NORMAL,
-			protogen.GroupState_GROUP_STATE_DISABLED,
-			protogen.GroupState_GROUP_STATE_DELETED,
+		GroupState: []protogen.State{
+			protogen.State_STATE_NORMAL,
+			protogen.State_STATE_DISABLED,
+			protogen.State_STATE_DELETED,
 		},
 	}
 	return listModeResponse, nil
