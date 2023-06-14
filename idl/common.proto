@@ -1,6 +1,8 @@
 syntax = "proto3";
 package idl;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "evildoer/protogen;protogen";
 option java_multiple_files = true;
 
@@ -12,8 +14,8 @@ message Page {
 message Search {
   optional sort sort = 1; // default value is 'created_at desc', proto3 disallowed custom value, we could use add-ons
   optional string content = 2; // like
-  optional string created_after = 3;
-  optional string created_before = 4;
+  google.protobuf.Timestamp created_after = 3;
+  google.protobuf.Timestamp created_before = 4;
 }
 
 message sort {

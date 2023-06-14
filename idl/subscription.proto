@@ -8,9 +8,15 @@ option go_package = "evildoer/protogen;protogen";
 option java_multiple_files = true;
 
 service SubscriptionSrv {
-  rpc ListSubscription (Page) returns (ListSubscriptionResponse) {}
+  rpc ListSubscription (ListSubscriptionReq) returns (ListSubscriptionResponse) {}
   rpc GetSubscription (IDReqOrResponse) returns (SubscriptionResponse) {}
   rpc CreateSubscription(Subscription) returns (SubscriptionResponse) {}
+}
+
+message ListSubscriptionReq {
+  Page page = 1;
+  optional string form_key = 2;
+  optional Search search_option = 3;
 }
 
 message SubscriptionResponse {
@@ -33,7 +39,7 @@ message Subscription {
   string key = 2;
   string name = 3;
   string description = 4;
-  bytes form_key = 5;
+  string group_key = 5;
   map<string, subscribe_rules> subscribe_rule = 6;
   repeated consumer consume_config = 7;
   string state = 8;
@@ -52,5 +58,5 @@ message subscribe_rule {
 
 message consumer {
   string type = 1;
-  string config = 2;
+  map<string, string> config = 2;
 }

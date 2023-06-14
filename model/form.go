@@ -1,7 +1,6 @@
 package model
 
 import (
-	"encoding/json"
 	"evildoer/protogen"
 
 	"github.com/kamva/mgm/v3"
@@ -26,10 +25,6 @@ func (Form) CollectionName() string {
 }
 
 func (f Form) Conv() *protogen.Form {
-	marshaler := func(data interface{}) []byte {
-		buffer, _ := json.Marshal(data)
-		return buffer
-	}
 	return &protogen.Form{
 		Id:            []byte(f.ID.Hex()),
 		Key:           f.Key,
@@ -46,11 +41,6 @@ func (f Form) Conv() *protogen.Form {
 }
 
 func (Form) NewForm(form *protogen.Form) *Form {
-	unmarsaler := func(buffer []byte) map[string]interface{} {
-		var result = make(map[string]interface{})
-		_ = json.Unmarshal(buffer, &result)
-		return result
-	}
 	return &Form{
 		DefaultModel:  mgm.DefaultModel{},
 		Key:           form.Key,
@@ -61,7 +51,7 @@ func (Form) NewForm(form *protogen.Form) *Form {
 		Latest:        true,
 		Version:       form.Version,
 		Group:         form.GroupKey,
-		ContentScheme: unmarsaler(form.ContentScheme),
-		ContentSample: unmarsaler(form.ContentSample),
+		ContentScheme: unmarshaler(form.ContentScheme),
+		ContentSample: unmarshaler(form.ContentSample),
 	}
 }

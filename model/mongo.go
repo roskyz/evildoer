@@ -1,6 +1,9 @@
 package model
 
-import "evildoer/protogen"
+import (
+	"encoding/json"
+	"evildoer/protogen"
+)
 
 const prefix = "evildoer_v1_"
 
@@ -14,4 +17,15 @@ var StateMapReverse = map[string]protogen.State{
 	"normal":   protogen.State_STATE_NORMAL,
 	"disabled": protogen.State_STATE_DISABLED,
 	"deleted":  protogen.State_STATE_DELETED,
+}
+
+var marshaler = func(data interface{}) []byte {
+	buffer, _ := json.Marshal(data)
+	return buffer
+}
+
+var unmarshaler = func(buffer []byte) map[string]interface{} {
+	var result = make(map[string]interface{})
+	_ = json.Unmarshal(buffer, &result)
+	return result
 }

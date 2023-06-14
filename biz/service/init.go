@@ -58,6 +58,9 @@ func NewService() (*grpc.Server, error) {
 	if err := regFormService(grpcSrv); err != nil {
 		return nil, err
 	}
+	if err := regEventService(grpcSrv); err != nil {
+		return nil, err
+	}
 	return grpcSrv, nil
 }
 

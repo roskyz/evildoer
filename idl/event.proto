@@ -2,32 +2,34 @@ syntax = "proto3";
 package idl;
 
 import "common.proto";
-import "google/protobuf/timestamp.proto";
 
 option go_package = "evildoer/protogen;protogen";
 option java_multiple_files = true;
 
 service EventSrv {
   rpc SearchEvent (SearchEventReq) returns (SearchEventResponse) {}
-  rpc GetEvent (GetEventRep) returns (GetEventResponse) {}
+  rpc GetEvent (GetEventReq) returns (GetEventResponse) {}
   rpc CreateEvent (CreateEventReq) returns (Event) {}
 }
 
 message SearchEventReq {
   Page page = 1;
-  google.protobuf.Timestamp start = 2;
-  google.protobuf.Timestamp end = 3;
-  bytes group_key = 4;
-  bytes form_key = 5;
+  message EventSearch {
+    optional Search search_option = 1;
+    optional string form_key = 5;
+    optional string creator = 3;
+  }
+  EventSearch event_search = 3;
 }
 
-message GetEventRep {
-  bytes uuid = 1;
+message GetEventReq {
+  string uuid = 1;
 }
 
 message SearchEventResponse {
   DefaultResponse default_response = 1;
-  repeated Event events = 2;
+  int64 count = 2;
+  repeated Event events = 3;
 }
 
 message GetEventResponse {
@@ -36,17 +38,17 @@ message GetEventResponse {
 }
 
 message CreateEventReq {
-  bytes form_key = 1;
+  string form_key = 1;
   int32 form_version = 2;
   bytes input_data = 3;
 }
 
 message Event {
-  bytes uuid = 1;
+  string uuid = 1;
   string access_mode = 2;
-  bytes form_key = 3;
+  string form_key = 3;
   int32 form_version = 4;
   bytes input_data = 5;
-  bytes cloud_events = 6;
+  optional bytes cloudevents = 6;
   string creator = 7;
 }

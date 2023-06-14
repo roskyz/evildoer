@@ -16,6 +16,7 @@ import (
 type BizInterfaces interface {
 	groupInterface
 	formInterface
+	eventInterface
 	Transaction(ctx context.Context, fn func(context.Context) error) error
 }
 
@@ -54,8 +55,8 @@ func generateSingleRegex(fieldName string, value string) bson.E {
 	return bson.E{Key: fieldName, Value: primitive.Regex{Pattern: value}}
 }
 
-func GenerateSingleFind(fieldName string, value interface{}) bson.D {
-	return bson.D{bson.E{Key: fieldName, Value: value}}
+func GenerateSingleFind(fieldName string, value interface{}) bson.E {
+	return bson.E{Key: fieldName, Value: value}
 }
 
 func GenerateFindOption(sortField string, asc bool, offset, limit int64) *options.FindOptions {

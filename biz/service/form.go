@@ -31,7 +31,7 @@ func (fs *formService) ListForm(ctx context.Context, req *protogen.ListFormReq) 
 
 	latestVersion := req.GetFormSearch().GetLatest()
 	if latestVersion && sortField != "created_at" && !sortAsc {
-		filter = append(filter, bson.E{Key: "latest", Value: true})
+		filter = append(filter, odm.GenerateSingleFind("latest", true))
 	}
 
 	count, forms, err := odm.GetMongo().ListForms(ctx, filter,

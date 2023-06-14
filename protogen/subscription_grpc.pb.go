@@ -28,7 +28,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SubscriptionSrvClient interface {
-	ListSubscription(ctx context.Context, in *Page, opts ...grpc.CallOption) (*ListSubscriptionResponse, error)
+	ListSubscription(ctx context.Context, in *ListSubscriptionReq, opts ...grpc.CallOption) (*ListSubscriptionResponse, error)
 	GetSubscription(ctx context.Context, in *IDReqOrResponse, opts ...grpc.CallOption) (*SubscriptionResponse, error)
 	CreateSubscription(ctx context.Context, in *Subscription, opts ...grpc.CallOption) (*SubscriptionResponse, error)
 }
@@ -41,7 +41,7 @@ func NewSubscriptionSrvClient(cc grpc.ClientConnInterface) SubscriptionSrvClient
 	return &subscriptionSrvClient{cc}
 }
 
-func (c *subscriptionSrvClient) ListSubscription(ctx context.Context, in *Page, opts ...grpc.CallOption) (*ListSubscriptionResponse, error) {
+func (c *subscriptionSrvClient) ListSubscription(ctx context.Context, in *ListSubscriptionReq, opts ...grpc.CallOption) (*ListSubscriptionResponse, error) {
 	out := new(ListSubscriptionResponse)
 	err := c.cc.Invoke(ctx, SubscriptionSrv_ListSubscription_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -72,7 +72,7 @@ func (c *subscriptionSrvClient) CreateSubscription(ctx context.Context, in *Subs
 // All implementations must embed UnimplementedSubscriptionSrvServer
 // for forward compatibility
 type SubscriptionSrvServer interface {
-	ListSubscription(context.Context, *Page) (*ListSubscriptionResponse, error)
+	ListSubscription(context.Context, *ListSubscriptionReq) (*ListSubscriptionResponse, error)
 	GetSubscription(context.Context, *IDReqOrResponse) (*SubscriptionResponse, error)
 	CreateSubscription(context.Context, *Subscription) (*SubscriptionResponse, error)
 	mustEmbedUnimplementedSubscriptionSrvServer()
@@ -82,7 +82,7 @@ type SubscriptionSrvServer interface {
 type UnimplementedSubscriptionSrvServer struct {
 }
 
-func (UnimplementedSubscriptionSrvServer) ListSubscription(context.Context, *Page) (*ListSubscriptionResponse, error) {
+func (UnimplementedSubscriptionSrvServer) ListSubscription(context.Context, *ListSubscriptionReq) (*ListSubscriptionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSubscription not implemented")
 }
 func (UnimplementedSubscriptionSrvServer) GetSubscription(context.Context, *IDReqOrResponse) (*SubscriptionResponse, error) {
@@ -105,7 +105,7 @@ func RegisterSubscriptionSrvServer(s grpc.ServiceRegistrar, srv SubscriptionSrvS
 }
 
 func _SubscriptionSrv_ListSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Page)
+	in := new(ListSubscriptionReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func _SubscriptionSrv_ListSubscription_Handler(srv interface{}, ctx context.Cont
 		FullMethod: SubscriptionSrv_ListSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SubscriptionSrvServer).ListSubscription(ctx, req.(*Page))
+		return srv.(SubscriptionSrvServer).ListSubscription(ctx, req.(*ListSubscriptionReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

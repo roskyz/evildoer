@@ -29,7 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EventSrvClient interface {
 	SearchEvent(ctx context.Context, in *SearchEventReq, opts ...grpc.CallOption) (*SearchEventResponse, error)
-	GetEvent(ctx context.Context, in *GetEventRep, opts ...grpc.CallOption) (*GetEventResponse, error)
+	GetEvent(ctx context.Context, in *GetEventReq, opts ...grpc.CallOption) (*GetEventResponse, error)
 	CreateEvent(ctx context.Context, in *CreateEventReq, opts ...grpc.CallOption) (*Event, error)
 }
 
@@ -50,7 +50,7 @@ func (c *eventSrvClient) SearchEvent(ctx context.Context, in *SearchEventReq, op
 	return out, nil
 }
 
-func (c *eventSrvClient) GetEvent(ctx context.Context, in *GetEventRep, opts ...grpc.CallOption) (*GetEventResponse, error) {
+func (c *eventSrvClient) GetEvent(ctx context.Context, in *GetEventReq, opts ...grpc.CallOption) (*GetEventResponse, error) {
 	out := new(GetEventResponse)
 	err := c.cc.Invoke(ctx, EventSrv_GetEvent_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -73,7 +73,7 @@ func (c *eventSrvClient) CreateEvent(ctx context.Context, in *CreateEventReq, op
 // for forward compatibility
 type EventSrvServer interface {
 	SearchEvent(context.Context, *SearchEventReq) (*SearchEventResponse, error)
-	GetEvent(context.Context, *GetEventRep) (*GetEventResponse, error)
+	GetEvent(context.Context, *GetEventReq) (*GetEventResponse, error)
 	CreateEvent(context.Context, *CreateEventReq) (*Event, error)
 	mustEmbedUnimplementedEventSrvServer()
 }
@@ -85,7 +85,7 @@ type UnimplementedEventSrvServer struct {
 func (UnimplementedEventSrvServer) SearchEvent(context.Context, *SearchEventReq) (*SearchEventResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchEvent not implemented")
 }
-func (UnimplementedEventSrvServer) GetEvent(context.Context, *GetEventRep) (*GetEventResponse, error) {
+func (UnimplementedEventSrvServer) GetEvent(context.Context, *GetEventReq) (*GetEventResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEvent not implemented")
 }
 func (UnimplementedEventSrvServer) CreateEvent(context.Context, *CreateEventReq) (*Event, error) {
@@ -123,7 +123,7 @@ func _EventSrv_SearchEvent_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _EventSrv_GetEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetEventRep)
+	in := new(GetEventReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -135,7 +135,7 @@ func _EventSrv_GetEvent_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: EventSrv_GetEvent_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EventSrvServer).GetEvent(ctx, req.(*GetEventRep))
+		return srv.(EventSrvServer).GetEvent(ctx, req.(*GetEventReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
